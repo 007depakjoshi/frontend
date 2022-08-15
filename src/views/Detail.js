@@ -8,11 +8,11 @@ const Detail = (props) => {
   let navigate = useHistory();
   const [provdetail, setProvdetail] = useState('');
   const [provservice, setProvService] = useState('');
-  const [service , setService] = useState('');
-  const [date , setDate] = useState('');
-  const [time , setTime] = useState('');
-  const [message , setMessage] = useState('');
-  const [address , setAddress] = useState('');
+  const [service, setService] = useState([]);
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [message, setMessage] = useState('');
+  const [address, setAddress] = useState('');
 
   const provId = props.match.params.id;
   // const parseData = JSON.parse(localStorage.getItem("logged_user"));
@@ -36,21 +36,45 @@ const Detail = (props) => {
 
         }
       })
+    axios.get(`http://localhost:3000/providerservice/${provId}`,)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        const data = res.data
+        if (res.status == 200) {
+          console.log('datadata', data.data)
+          setProvService(data.data)
+        } else {
+
+        }
+      })
   }
+
+  const handleChange = (event) => {
+    console.log("eventhere",event.target.id)
+    if(!service.includes(event.target.id)){
+      service.push(event.target.id);
+      setService(service);
+    }else{
+      service.pop(event.target.id);
+      setService(service);
+    }
+    console.log('services',service)
+}
 
   const handleSubmit = event => {
     event.preventDefault();
     console.log('submit')
 
-    axios.post(`http://localhost:3000/book`, { service: [1,9], app_date: date, app_time: time, comment: message, customer: 1, address: address })
+    axios.post(`http://localhost:3000/book`, { service: service, app_date: date, app_time: time, comment: message, customer: 2, address: address })
       .then(res => {
         console.log(res);
         console.log(res.data);
         const data = res.data
-        if(res.status == 200){
-          localStorage.setItem("logged_user", JSON.stringify(data));
-          navigate.push('/');
-        }else{
+        if (res.status == 200) {
+          //localStorage.setItem("logged_user", JSON.stringify(data));
+          navigate.push('/profile');
+        } else {
 
         }
       })
@@ -122,6 +146,7 @@ const Detail = (props) => {
                   alt="..."
                   className="max-w-full rounded-lg shadow-lg"
                   src={require("assets/vendor/hairsalon2.jpg").default}
+                //{require("assets/vendor/hairsalon2.jpg").default}
                 //{require(`assets/vendor/${provdetail.front_image}`).default}
                 />
               </div>
@@ -193,26 +218,15 @@ const Detail = (props) => {
               </div>
             </div>
             <div className="flex flex-wrap">
-              <div className="w-1/2 px-4 md:w-4/12">
-                <span className="text-sm block my-4 p-3 text-blueGray-700 rounded border border-solid border-blueGray-100">
-                Full Body Waxing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$20
+              {provservice.length > 0 && provservice.map((pro_serv) => (
+                <div className="w-1/2 px-4 md:w-4/12">
+                  <span className="text-sm text-center	font-bold	block my-4 p-3 text-blueGray-700 rounded border border-solid border-black-100">
+                    {pro_serv.name}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${pro_serv.price}
                   </span>
-              </div>
-              <div className="w-1/2 px-4 md:w-4/12">
-                <span className="text-sm block my-4 p-3 text-blueGray-700 rounded border border-solid border-blueGray-100">
-                Hair Cutting &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$20
-                  </span>
-              </div>
-              <div className="w-1/2 px-4 md:w-4/12">
-                <span className="text-sm block my-4 p-3 text-blueGray-700 rounded border border-solid border-blueGray-100">
-                  Bridal Makeup &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$20
-                  </span>
-              </div>
-              <div className="w-1/2 px-4 md:w-4/12">
-                <span className="text-sm block my-4 p-3 text-blueGray-700 rounded border border-solid border-blueGray-100">
-                Manicure & Pedicure &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$20
-                  </span>
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -265,78 +279,83 @@ const Detail = (props) => {
                       hours.
                     </p>
                     <form onSubmit={handleSubmit}>
-                    <div class="flex items-center mb-4">
-    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-    <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Body Waxing</label>
-</div>
-<div class="flex items-center mb-4">
-    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-    <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Hair Cutting</label>
-</div>
-                    <div className="relative w-full mb-3 mt-8">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      >
-                        Date
-                      </label>
-                      <input
-                        type="date"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Booking Date"
-                      />
-                    </div>
+                      {provservice.length > 0 && provservice.map((pro_serv) => (
+                        <div class="flex items-center mb-4">
+                          <input id={pro_serv.provider_service_id} type="checkbox" value=""  onChange={handleChange}
+                          class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                          <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{pro_serv.name}</label>
+                        </div>
+                      ))}
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      >
-                        Time
-                      </label>
-                      <input
-                        type="time"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Booking Time"
-                      />
-                    </div>
+                      <div className="relative w-full mb-3 mt-8">
+                        <label
+                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        >
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          placeholder="Booking Date"
+                          onChange={(e) => setDate(e.target.value)}
+                        />
+                      </div>
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="address"
-                      >
-                        Address
-                      </label>
-                      <textarea
-                        rows="4"
-                        cols="80"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                        placeholder="Booking Address"
-                      />
-                    </div>
+                      <div className="relative w-full mb-3">
+                        <label
+                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        >
+                          Time
+                        </label>
+                        <input
+                          type="time"
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          placeholder="Booking Time"
+                          onChange={(e) => setTime(e.target.value)}
+                        />
+                      </div>
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="message"
-                      >
-                        Message
-                      </label>
-                      <textarea
-                        rows="4"
-                        cols="80"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                        placeholder="Type a message..."
-                      />
-                    </div>
+                      <div className="relative w-full mb-3">
+                        <label
+                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                          htmlFor="address"
+                        >
+                          Address
+                        </label>
+                        <textarea
+                          rows="4"
+                          cols="80"
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                          placeholder="Booking Address"
+                          onChange={(e) => setAddress(e.target.value)}
+                        />
+                      </div>
 
-                    <div className="text-center mt-6">
-                      <button
-                        className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="submit"
-                      >
-                        Book
-                      </button>
-                    </div>
+                      <div className="relative w-full mb-3">
+                        <label
+                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                          htmlFor="message"
+                        >
+                          Message
+                        </label>
+                        <textarea
+                          rows="4"
+                          cols="80"
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                          placeholder="Type a message..."
+                          onChange={(e) => setMessage(e.target.value)}
+
+                        />
+                      </div>
+
+                      <div className="text-center mt-6">
+                        <button
+                          className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="submit"
+                        >
+                          Book
+                        </button>
+                      </div>
                     </form>
                   </div>
                 </div>

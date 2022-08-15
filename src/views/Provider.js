@@ -4,12 +4,7 @@ import Footer from "components/Footers/Footer.js";
 import axios from 'axios';
 import Moment from 'moment';
 
-const Profile = (props) => {
-  const parseData = JSON.parse(localStorage.getItem("logged_user"));
-  const name = parseData ? parseData.data.first_name + " " + parseData.data.last_name : '';
-  const email = parseData ? parseData.data.email : '';
-  const address = parseData ? parseData.data.address : '';
-  const customer_id = parseData ? parseData.data.customer_id : '';
+const Provider = (props) => {
 
   const [booking, setBooking] = useState('');
 
@@ -19,7 +14,7 @@ const Profile = (props) => {
   }, []);
 
   async function fetchdata() {
-    axios.get(`http://localhost:3000/customerbooking/${customer_id}`,)
+    axios.get(`http://localhost:3000/bookinglist/1`,)
       .then(res => {
         const data = res.data
         if (res.status == 200) {
@@ -123,19 +118,22 @@ const Profile = (props) => {
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    {name}
+                    {/* {name} */}
+                    {"Chatters Hair Salon"}
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                     <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
-                    Los Angeles, California
+                    {"550 King St N N21, Waterloo, ON "}
                   </div>
                   <div className="mb-2 text-blueGray-600 mt-10">
                     <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                    {email}
+                    {/* {email} */}
+                    {"salon@chattershairsalon.ca"}
                   </div>
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                    {address}
+                    {/* {address} */}
+                    {"N2L 5W6"}
                   </div>
                 </div>
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
@@ -176,4 +174,4 @@ const Profile = (props) => {
   );
 }
 
-export default Profile;
+export default Provider;

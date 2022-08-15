@@ -18,6 +18,9 @@ import Index from "views/Index.js";
 import About from "views/About";
 import Contact from "views/Contact";
 import Search from "views/Search";
+import Provider from "views/Provider";
+import Dashboard from "views/admin/Dashboard";
+
 // import { Provider } from 'react-redux'
 // import store from './app/store'
 
@@ -34,6 +37,8 @@ ReactDOM.render(
       <Route path="/about" exact component={About} />
       <Route path="/contact" exact component={Contact} />
       <Route path="/search" exact component={Search} />
+      <Route path="/provider" exact component={Provider} />
+
       <Route path="/" exact component={Index} />
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />

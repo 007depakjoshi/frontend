@@ -3,7 +3,7 @@ import { Link, useHistory  } from "react-router-dom";
 import axios from 'axios';
 
 
-const Login = (props) => {
+const ProviderLogin = (props) => {
   let navigate = useHistory ();
 
   const [username , setUsername] = useState('');
@@ -18,13 +18,13 @@ const Login = (props) => {
     event.preventDefault();
     console.log('submit')
 
-    axios.post(`http://localhost:3000/customerLogin`, { email: username, password: password })
+    axios.post(`http://localhost:3000/providersLogin`, { email: username, password: password })
       .then(res => {
         console.log(res);
         console.log(res.data);
         const data = res.data
         if(res.status == 200){
-          localStorage.setItem("logged_user", JSON.stringify(data));
+          localStorage.setItem("provider_logged_user", JSON.stringify(data));
           navigate.push('/');
         }else{
           setLogerror(true)
@@ -41,9 +41,8 @@ const Login = (props) => {
         <div className="w-full lg:w-4/12 px-4">
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-              <div className="text-blueGray-400 text-center mb-3 font-bold">
-                <br/>
-                <b>Sign in with credentials</b>
+              <div className="text-blueGray-400 text-center mb-3 font-bold"><br/>
+                <b>Sign in As A Professional</b>
               </div>
               <form onSubmit={handleSubmit}>
                 {logerror == true ?
@@ -125,4 +124,4 @@ const Login = (props) => {
     )
 }
 
-export default Login;
+export default ProviderLogin;
