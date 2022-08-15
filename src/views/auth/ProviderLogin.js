@@ -25,7 +25,7 @@ const ProviderLogin = (props) => {
         const data = res.data
         if(res.status == 200){
           localStorage.setItem("provider_logged_user", JSON.stringify(data));
-          navigate.push('/');
+          navigate.push('/admin/dashboard');
         }else{
           setLogerror(true)
         }

@@ -6,7 +6,7 @@ const ProviderRegister = (props) => {
   let navigate = useHistory ();
 
   const [firstName , setfirstName] = useState('');
-  const [lastName , setLastName] = useState('');
+  const [description , setDescription] = useState('');
   const [phone , setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password , setPassword] = useState('');
@@ -19,13 +19,13 @@ const ProviderRegister = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    axios.post(`http://localhost:3000/providersRegister`, { first_name: firstName, last_name: lastName, phone: phone, email: email, password: password })
+    axios.post(`http://localhost:3000/providersRegister`, { company_name: firstName, description: description, phone: phone, email: email, password: password, address: address, pincode : pincode, category_id : 6 })
       .then(res => {
         console.log(res);
         console.log(res.data);
         if(res.status === 200)
         {
-          localStorage.setItem("customer_id", res.data.customer_id);
+          localStorage.setItem("Provider_id", res.data.customer_id);
           localStorage.setItem("username", res.data.email);
           localStorage.setItem("name", res.data.first_name +" "+ res.data.last_name);
           navigate.push('/');
@@ -81,27 +81,13 @@ const ProviderRegister = (props) => {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      First Name
+                      Company Name
                     </label>
                     <input
                       type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="First Name"
                       onChange={(e) => setfirstName(e.target.value)}
-                    />
-                  </div>
-                  <div className="relative w-full mb-3">
-                    <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor="grid-password"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Last Name"
-                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </div>
                   <div className="relative w-full mb-3">
@@ -174,6 +160,21 @@ const ProviderRegister = (props) => {
                     />
                   </div>
 
+                  <div className="relative w-full mb-3">
+                    <label
+                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
+                      Description
+                    </label>
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      placeholder="Last Name"
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </div>
+
                   <div>
                     <label className="inline-flex items-center cursor-pointer">
                       <input
@@ -205,6 +206,16 @@ const ProviderRegister = (props) => {
                 </form>
               </div>
             </div>
+            <div className="flex flex-wrap mt-6 relative">
+            <div className="w-1/2">
+
+            </div>
+            <div className="w-1/2 text-right">
+              <Link to="/auth/ProviderLogin" className="text-blueGray-200">
+                <small>Provider Login</small>
+              </Link>
+            </div>
+          </div>
           </div>
         </div>
       </div>
